@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- Site Metas -->
+  <title>Profile - SmartProp</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Site Icons -->
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!-- Site CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Colors CSS -->
+  <link rel="stylesheet" href="css/colors.css">
+  <!-- ALL VERSION CSS -->
+  <link rel="stylesheet" href="css/versions.css">
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" href="css/responsive.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/custom.css">
+
+  <!-- Modernizer for Portfolio -->
+  <script src="js/modernizer.js"></script>
+
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="realestate_version">
+  <!-- LOADER -->
+  <div id="preloader">
+    <span class="loader"><span class="loader-inner"></span></span>
+  </div>
+  <!-- end loader -->
+  <!-- END LOADER -->
+
+  <header class="header header_style_01">
+    <nav class="megamenu navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html"> <img style="height:60px;"
+              src="images/logo.png" alt=""></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About us </a></li>
+            <li><a href="properties.html">Properties</a></li>
+            <li><a href="contact.html">Post Ad</a></li>
+            <li><a href="Auth/login.html">Login/Register</a></li>
+            <li id="profilebtn"><a class="active" href="profile.html">Profile</a></li>
+            <li id="logoutbtn"><a href="#" onclick="handleLogout()">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+	
+  <div class="all-title-box">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Profile</h2>
+          <!-- Breadcrumbs -->
+          <nav id="breadcrumbs">
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li>Profile</li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+	
+  <div id="features" class="section wb">
+    <div class="container">
+      <div class="section-title row text-center">
+        <div class="col-md-8 col-md-offset-2">
+          <h3>Bookings</h3>
+        </div>
+      </div>
+      <hr class="invis"> 
+
+      <div id="parent" class="row">
+        <!-- Booking cards will be appended here -->
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="widget clearfix">
+            <div class="widget-title">
+              <h1 style="color: aliceblue;">SmartProp</h1>
+            </div>
+            <p> About SmartProp: At SmartProp, we strive to make the process of finding and renting properties as smooth and efficient as possible. Our platform offers a diverse range of listings, advanced search filters, and detailed property information to help you find the perfect home. Whether you're a landlord looking to list your property or a renter in search of your next residence, SmartProp is here to connect you with the best options available. Trust, reliability, and ease of use are at the core of our mission.</p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="widget clearfix">
+            <div class="widget-title">
+              <h3>Info Link</h3>
+            </div>
+            <ul class="twitter-widget footer-links">
+              <li><a href="#"> Home </a></li>
+              <li><a href="#"> About Us </a></li>
+              <li><a href="#"> Properties</a></li>
+              <li><a href="#"> Contact</a></li>
+            </ul>
+          </div>
+        </div>
+				
+        <div class="col-md-3 col-sm-3 col-xs-12">
+          <div class="widget clearfix">
+            <div class="widget-title">
+              <h3>Contact Details</h3>
+            </div>
+            <ul class="footer-links">
+              <li><a href="mailto:#">evaanrahman2@gmail.com</a></li>
+              <li>Sector 14 Road 17 Uttara Dhaka - 1230 Bangladesh</li>
+              <li>+880131059-4301</li>
+            </ul>
+          </div>
+        </div>
+				
+        <div class="col-md-2 col-sm-2 col-xs-12">
+          <div class="widget clearfix">
+            <div class="widget-title">
+              <h3>Social</h3>
+            </div>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+              <li><a href="#"><i class="fa fa-github"></i> Github</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+
+  <!-- ALL JS FILES -->
+  <script src="js/all.js"></script>
+  <!-- ALL PLUGINS -->
+  <script src="js/custom.js"></script>
+  <script src="js/portfolio.js"></script>
+  <script src="js/hoverdir.js"></script>
+  <script src="profile.js"></script>
+  <script>
+    function fetchBookings() {
+  fetch('https://propsmart.onrender.com/showBooking/')
+    .then(res => res.json())
+    .then(data => {
+      displayBookings(data);
+    })
+    .catch(error => console.error('Error fetching booking data:', error));
+}
+
+fetchBookings();
+
+const displayBookings = (data) => {
+  console.log(data);
+  const parent = document.getElementById('parent');
+  parent.innerHTML = '';
+  
+  data.forEach(booking => {
+    const div = document.createElement('div');
+    div.classList = 'col-md-4 col-sm-6 col-xs-12';
+    div.innerHTML = `
+      <div class="service-widget">
+        <div class="property-main">
+          <div class="property-wrap">
+            <figure class="post-media wow fadeIn">
+              <a href="${booking.property.picture}" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+              <img src="${booking.property.picture}" alt="" class="img-responsive">
+              <div class="label-inner">
+                <span class="label-status label">${booking.property.rent} Taka</span>
+              </div>
+              <div class="price">
+                <span class="item-sub-price">${booking.property.area} sq-ft</span>
+              </div>
+            </figure>
+            <div class="item-body">
+              <h3>${booking.property.title}</h3>
+              <div class="info">
+                <h4>Total Rooms - ${booking.property.number_of_rooms}</h4>
+              </div>
+              <div class="adderess">
+                <i class="fa fa-map-pin" aria-hidden="true"></i>
+                ${booking.property.location}
+              </div>
+              <div class="adderess">
+                <span>Booking Date: ${formatDate(booking.bookingForDate)}</span>
+              </div>
+            </div>
+          </div>
+          <div class="item-foot">
+            <div class="pull-left">
+              <span class="prop-user-agent">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                ${booking.client.first_name} ${booking.client.last_name}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    parent.appendChild(div);
+  });
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  return date.toLocaleString('en-US', options);
+}
+
+
+  </script>
+  <script src="all.js"></script>
+</body>
+</html>
