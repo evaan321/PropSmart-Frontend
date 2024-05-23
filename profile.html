@@ -111,6 +111,36 @@
     </div>
   </div>
 
+  <div id="rentposts" class="section wb">
+    <div class="container">
+      <div class="section-title row text-center">
+        <div class="col-md-8 col-md-offset-2">
+          <h3>Your Rent Posts</h3>
+        </div>
+      </div>
+      <hr class="invis"> 
+
+      <div id="rentpost-container" class="row">
+        <!-- RentPost cards will be appended here -->
+      </div>
+    </div>
+  </div>
+
+  <div id="bookmarkedposts" class="section wb">
+    <div class="container">
+      <div class="section-title row text-center">
+        <div class="col-md-8 col-md-offset-2">
+          <h3>Your Bookmarked Posts</h3>
+        </div>
+      </div>
+      <hr class="invis"> 
+
+      <div id="bookmarkedpost-container" class="row">
+        <!-- Bookmarked Post cards will be appended here -->
+      </div>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="container">
       <div class="row">
@@ -175,79 +205,271 @@
   <script src="js/hoverdir.js"></script>
   <script src="profile.js"></script>
   <script>
+    // Get the logged-in user's ID from localStorage
+    const loggedInUserId = localStorage.getItem('user_id');
+
     function fetchBookings() {
-  fetch('https://propsmart.onrender.com/showBooking/')
-    .then(res => res.json())
-    .then(data => {
-      displayBookings(data);
-    })
-    .catch(error => console.error('Error fetching booking data:', error));
-}
+      fetch('https://propsmart.onrender.com/showBooking/')
+        .then(res => res.json())
+        .then(data => {
+          // Filter bookings to show only those made by the logged-in user
+          const userBookings = data.filter(booking => booking.client.id == loggedInUserId);
+          displayBookings(userBookings);
+        })
+        .catch(error => console.error('Error fetching booking data:', error));
+    }
 
-fetchBookings();
+    fetchBookings();
 
-const displayBookings = (data) => {
-  console.log(data);
-  const parent = document.getElementById('parent');
-  parent.innerHTML = '';
-  
-  data.forEach(booking => {
-    const div = document.createElement('div');
-    div.classList = 'col-md-4 col-sm-6 col-xs-12';
-    div.innerHTML = `
-      <div class="service-widget">
-        <div class="property-main">
-          <div class="property-wrap">
-            <figure class="post-media wow fadeIn">
-              <a href="${booking.property.picture}" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
-              <img src="${booking.property.picture}" alt="" class="img-responsive">
-              <div class="label-inner">
-                <span class="label-status label">${booking.property.rent} Taka</span>
+    const displayBookings = (data) => {
+      console.log(data);
+      const parent = document.getElementById('parent');
+      parent.innerHTML = '';
+      
+      data.forEach(booking => {
+        const div = document.createElement('div');
+        div.classList = 'col-md-4 col-sm-6 col-xs-12';
+        div.innerHTML = `
+          <div class="service-widget">
+            <div class="property-main">
+              <div class="property-wrap">
+                <figure class="post-media wow fadeIn">
+                  <a href="${booking.property.picture}" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+                  <img src="${booking.property.picture}" alt="" class="img-responsive">
+                  <div class="label-inner">
+                    <span class="label-status label">${booking.property.rent} Taka</span>
+                  </div>
+                  <div class="price">
+                    <span class="item-sub-price">${booking.property.area} sq-ft</span>
+                  </div>
+                </figure>
+                <div class="item-body">
+                  <h3>${booking.property.title}</h3>
+                  <div class="info">
+                    <h4>Total Rooms - ${booking.property.number_of_rooms}</h4>
+                  </div>
+                  <div class="adderess">
+                    <i class="fa fa-map-pin" aria-hidden="true"></i>
+                    ${booking.property.location}
+                  </div>
+                  <div class="adderess">
+                    <span>Booking Date: ${formatDate(booking.bookingForDate)}</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="btn btn-danger" onclick="deleteAppointment(${booking.id})">Complete Appointment</button>
+                  </div>
+                </div>
               </div>
-              <div class="price">
-                <span class="item-sub-price">${booking.property.area} sq-ft</span>
-              </div>
-            </figure>
-            <div class="item-body">
-              <h3>${booking.property.title}</h3>
-              <div class="info">
-                <h4>Total Rooms - ${booking.property.number_of_rooms}</h4>
-              </div>
-              <div class="adderess">
-                <i class="fa fa-map-pin" aria-hidden="true"></i>
-                ${booking.property.location}
-              </div>
-              <div class="adderess">
-                <span>Booking Date: ${formatDate(booking.bookingForDate)}</span>
+              <div class="item-foot">
+                <div class="pull-left">
+                  <span class="prop-user-agent">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    ${booking.client.first_name} ${booking.client.last_name}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="item-foot">
-            <div class="pull-left">
-              <span class="prop-user-agent">
-                <i class="fa fa-user" aria-hidden="true"></i>
-                ${booking.client.first_name} ${booking.client.last_name}
-              </span>
+        `;
+        parent.appendChild(div);
+      });
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
+      return date.toLocaleString('en-US', options);
+    }
+
+    function fetchRentPosts() {
+      fetch('https://propsmart.onrender.com/Post/')
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          // Filter rent posts to show only those made by the logged-in user
+          const userRentPosts = data.filter(post => post.renter == loggedInUserId);
+          displayRentPosts(userRentPosts);
+        })
+        .catch(error => console.error('Error fetching rent posts:', error));
+    }
+
+    fetchRentPosts();
+
+    const displayRentPosts = (data) => {
+      console.log(data);
+      const rentpostContainer = document.getElementById('rentpost-container');
+      rentpostContainer.innerHTML = '';
+      
+      data.forEach(post => {
+        const div = document.createElement('div');
+        div.classList = 'col-md-4 col-sm-6 col-xs-12';
+        div.innerHTML = `
+          <div class="service-widget">
+            <div class="property-main">
+              <div class="property-wrap">
+                <figure class="post-media wow fadeIn">
+                  <a href="${post.picture}" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+                  <img src="${post.picture}" alt="" class="img-responsive">
+                  <div class="label-inner">
+                    <span class="label-status label">${post.rent} Taka</span>
+                  </div>
+                  <div class="price">
+                    <span class="item-sub-price">${post.area} sq-ft</span>
+                  </div>
+                </figure>
+                <div class="item-body">
+                  <h3>${post.title}</h3>
+                  <div class="info">
+                    <h4>Total Rooms - ${post.number_of_rooms}</h4>
+                  </div>
+                  <div class="adderess">
+                    <i class="fa fa-map-pin" aria-hidden="true"></i>
+                    ${post.location}
+                  </div>
+                  <div class="adderess">
+                    <span>Posted Date: ${formatDate(post.posted)}</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="editPost(${post.id})">Edit</button>
+                    <button class="btn btn-danger" onclick="deletePost(${post.id})">Delete</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    `;
-    parent.appendChild(div);
-  });
-}
+        `;
+        rentpostContainer.appendChild(div);
+      });
+    }
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
-  return date.toLocaleString('en-US', options);
-}
+    function editPost(postId) {
+      window.location.href = `edit.html?id=${postId}`;
+    }
 
+    function deletePost(postId) {
+      if (confirm('Are you sure you want to delete this post?')) {
+        fetch(`https://propsmart.onrender.com/Post/${postId}/`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              alert('Post deleted successfully!');
+              fetchRentPosts(); // Refresh the posts list
+            } else {
+              alert('Failed to delete the post.');
+            }
+          })
+          .catch(error => console.error('Error deleting post:', error));
+      }
+    }
 
+    function fetchBookmarkedPosts() {
+      fetch('https://propsmart.onrender.com/ShowBookmark/')
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          
+          const userBookmarkedPosts = data.filter(bookmark => bookmark.user.id == loggedInUserId);
+          displayBookmarkedPosts(userBookmarkedPosts);
+        })
+        .catch(error => console.error('Error fetching bookmarked posts:', error));
+    }
+
+    fetchBookmarkedPosts();
+
+    const displayBookmarkedPosts = (data) => {
+      console.log(data);
+      const bookmarkedpostContainer = document.getElementById('bookmarkedpost-container');
+      bookmarkedpostContainer.innerHTML = '';
+      
+      data.forEach(bookmark => {
+        const post = bookmark.property;
+        const div = document.createElement('div');
+        div.classList = 'col-md-4 col-sm-6 col-xs-12';
+        div.innerHTML = `
+          <div class="service-widget">
+            <div class="property-main">
+              <div class="property-wrap">
+                <figure class="post-media wow fadeIn">
+                  <a href="${post.picture}" data-rel="prettyPhoto[gal]" class="hoverbutton global-radius"><i class="flaticon-unlink"></i></a>
+                  <img src="${post.picture}" alt="" class="img-responsive">
+                  <div class="label-inner">
+                    <span class="label-status label">${post.rent} Taka</span>
+                  </div>
+                  <div class="price">
+                    <span class="item-sub-price">${post.area} sq-ft</span>
+                  </div>
+                </figure>
+                <div class="item-body">
+                  <h3>${post.title}</h3>
+                  <div class="info">
+                    <h4>Total Rooms - ${post.number_of_rooms}</h4>
+                  </div>
+                  <div class="adderess">
+                    <i class="fa fa-map-pin" aria-hidden="true"></i>
+                    ${post.location}
+                  </div>
+                  <div class="adderess">
+                    <span>Posted Date: ${formatDate(post.posted)}</span>
+                  </div>
+                  <div class="action-buttons">
+                    <button class="btn btn-danger" onclick="deleteBookmark(${bookmark.id})">Remove Bookmark</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        bookmarkedpostContainer.appendChild(div);
+      });
+    }
+
+    function deleteAppointment(bookingId) {
+      if (confirm('Are you sure you want to complete (delete) this appointment?')) {
+        fetch(`https://propsmart.onrender.com/booking/${bookingId}/`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              alert('Appointment completed (deleted) successfully!');
+              fetchBookings(); 
+            } else {
+              alert('Failed to complete (delete) the appointment.');
+            }
+          })
+          .catch(error => console.error('Error completing (deleting) appointment:', error));
+      }
+    }
+
+    function deleteBookmark(bookmarkId) {
+      if (confirm('Are you sure you want to remove this bookmark?')) {
+        fetch(`https://propsmart.onrender.com/ShowBookmark/${bookmarkId}/`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => {
+            if (response.ok) {
+              alert('Bookmark removed successfully!');
+              fetchBookmarkedPosts(); 
+            } else {
+              alert('Failed to remove the bookmark.');
+            }
+          })
+          .catch(error => console.error('Error removing bookmark:', error));
+      }
+    }
   </script>
   <script src="all.js"></script>
 </body>

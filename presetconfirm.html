@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+</head>
+<body>
+    <h2>Reset Password</h2>
+    <form id="resetPasswordForm">
+        <label for="new_password">Enter new password:</label>
+        <input type="password" name="new_password" id="new_password" required>
+        <label for="confirm_password">Confirm new password:</label>
+        <input type="password" name="confirm_password" id="confirm_password" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const new_password = document.getElementById('new_password').value;
+            const confirm_password = document.getElementById('confirm_password').value;
+            const urlParams = new URLSearchParams(window.location.search);
+            const uidb64 = urlParams.get('uidb64');
+            const token = urlParams.get('token');
+
+            fetch(`http://127.0.0.1:8000/password_reset_confirm/${uidb64}/${token}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ new_password: new_password, confirm_password: confirm_password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').innerText = data.detail;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
