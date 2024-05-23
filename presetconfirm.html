@@ -2,42 +2,211 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
-</head>
-<body>
-    <h2>Reset Password</h2>
-    <form id="resetPasswordForm">
-        <label for="new_password">Enter new password:</label>
-        <input type="password" name="new_password" id="new_password" required>
-        <label for="confirm_password">Confirm new password:</label>
-        <input type="password" name="confirm_password" id="confirm_password" required>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="message"></div>
-
+    <title>Reset Password - SmartProp</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/versions.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="js/modernizer.js"></script>
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
     <script>
-        document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const new_password = document.getElementById('new_password').value;
-            const confirm_password = document.getElementById('confirm_password').value;
-            const urlParams = new URLSearchParams(window.location.search);
-            const uidb64 = urlParams.get('uidb64');
-            const token = urlParams.get('token');
+        // Function to get URL parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                uid: params.get('uid'),
+                token: params.get('token')
+            };
+        }
 
-            fetch(`http://127.0.0.1:8000/password_reset_confirm/${uidb64}/${token}/`, {
+        // Function to handle password reset
+        function resetPassword(event) {
+            event.preventDefault();
+            const params = getQueryParams();
+            const newPassword = document.getElementById('new_password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            // Send request to backend to reset password
+            fetch(`https://propsmart.onrender.com/password_reset_confirm/${params.uid}/${params.token}/`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ new_password: new_password, confirm_password: confirm_password }),
+                body: JSON.stringify({ new_password: newPassword, confirm_password: confirmPassword })
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('message').innerText = data.detail;
+                if (data.detail) {
+                    alert('Password has been reset successfully.');
+                    window.location.href = 'login.html'; // Redirect to login page after successful reset
+                } else {
+                    alert('Password reset failed. Please try again.');
+                }
             })
             .catch(error => console.error('Error:', error));
-        });
+        }
     </script>
+</head>
+<body class="realestate_version">
+
+    <!-- LOADER -->
+    <div id="preloader">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <!-- end loader -->
+    <!-- END LOADER -->
+
+    <header class="header header_style_01">
+        <nav class="megamenu navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html"> <img style="height:60px;" src="images/logo.png" alt=""></a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About us</a></li>
+                        <li><a href="properties.html">Properties</a></li>
+                        <li><a href="contact.html">Post Ad</a></li>
+                        <li><a href="Auth/login.html">Login/Register</a></li>
+                        <li id="profilebtn"><a href="profile.html">Profile</a></li>
+                        <li id="logoutbtn"><a href="#" onclick="handleLogout()">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Reset Password</h2>
+                    <!-- Breadcrumbs -->
+                    <nav id="breadcrumbs">
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li>Reset Password</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="support" class="section wb">
+        <div class="container">
+            <div class="section-title text-center">
+                <h3>Enter New Password</h3>
+                <p class="lead">Please enter your new password below.</p>
+            </div><!-- end title -->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="contact_form">
+                        <div id="message"></div>
+                        <form id="password-reset-form" class="row" onsubmit="resetPassword(event)">
+                            <fieldset class="row-fluid">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <input type="password" name="new_password" id="new_password" class="form-control" placeholder="Enter new password" required>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                    <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm new password" required>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                    <button type="submit" value="SEND" id="submit" class="btn btn-light btn-radius btn-brd grd1 btn-block">Reset Password</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end section -->
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="widget clearfix">
+                        <div class="widget-title">
+                            <h1 style="color: aliceblue;">SmartProp</h1>
+                        </div>
+                        <p> About SmartProp: At SmartProp, we strive to make the process of finding and renting properties as smooth and efficient as possible. Our platform offers a diverse range of listings, advanced search filters, and detailed property information to help you find the perfect home. Whether you're a landlord looking to list your property or a renter in search of your next residence, SmartProp is here to connect you with the best options available. Trust, reliability, and ease of use are at the core of our mission.</p>
+                    </div><!-- end clearfix -->
+                </div><!-- end col -->
+
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="widget clearfix">
+                        <div class="widget-title">
+                            <h3>Info Link</h3>
+                        </div>
+
+                        <ul class="twitter-widget footer-links">
+                            <li><a href="index.html"> Home </a></li>
+                            <li><a href="about.html"> About Us </a></li>
+                    
+                            <li><a href="properties.html"> Properties</a></li>
+                            <li><a href="contact.html"> Post Ad</a></li>
+                        </ul><!-- end links -->
+                    </div><!-- end clearfix -->
+                </div><!-- end col -->
+                
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="widget clearfix">
+                        <div class="widget-title">
+                            <h3>Contact Details</h3>
+                        </div>
+
+                        <ul class="footer-links">
+                            <li><a href="mailto:#">evaanrahman2@gmail.com</a></li>
+                            
+                            <li>Sector 14 Road 17 Uttara Dhaka - 1230 Bangladesh</li>
+                            <li>+880131059-4301</li>
+                        </ul><!-- end links -->
+                    </div><!-- end clearfix -->
+                </div><!-- end col -->
+                
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                    <div class="widget clearfix">
+                        <div class="widget-title">
+                            <h3>Social</h3>
+                        </div>
+                        <ul class="footer-links">
+                            <li><a href="#"><i class="fa fa-facebook"></i> Facebook</a></li>
+                            <li><a href="#"><i class="fa fa-github"></i> Github</a></li>
+                        </ul><!-- end links -->
+                    </div><!-- end clearfix -->
+                </div><!-- end col -->
+                
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </footer><!-- end footer -->
+
+    <a href="#" id="scroll-to-top" class="dmtop global-radius"><i class="fa fa-angle-up"></i></a>
+
+    <!-- ALL JS FILES -->
+    <script src="js/all.js"></script>
+    <!-- ALL PLUGINS -->
+    <script src="js/custom.js"></script>
+    <script src="js/portfolio.js"></script>
+    <script src="js/hoverdir.js"></script>    
+    <script src="all.js"></script>
 </body>
 </html>
